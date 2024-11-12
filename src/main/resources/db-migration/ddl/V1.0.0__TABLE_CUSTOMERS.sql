@@ -28,6 +28,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_updated_at
-    BEFORE UPDATE ON t_customers
+    BEFORE INSERT OR UPDATE ON t_customers
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();

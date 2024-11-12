@@ -1,4 +1,4 @@
-package py.com.cls.infrastructure.in.adapters.errors;
+package py.com.cls.infrastructure.in.adapters.exceptions.errors;
 
 import lombok.Builder;
 import lombok.Getter;

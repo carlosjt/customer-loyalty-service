@@ -1,4 +1,4 @@
-package py.com.cls.application.usecases.points_rules;
+package py.com.cls.application.usecases.point_rules;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vavr.control.Either;

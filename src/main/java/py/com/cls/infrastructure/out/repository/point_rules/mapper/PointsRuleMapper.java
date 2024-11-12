@@ -7,23 +7,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import py.com.cls.domain.models.point_rule.PointRule;
 import py.com.cls.domain.models.point_rule.PointRuleResponse;
-import py.com.cls.infrastructure.out.repository.point_rules.entity.PointsRules;
+import py.com.cls.infrastructure.out.repository.point_rules.entity.PointsRule;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "cdi")
-public interface PointsRulesMapper {
-    PointsRulesMapper INSTANCE = Mappers.getMapper(PointsRulesMapper.class);
-    PointRule toDomain(PointsRules pointsRules);
-    PointsRules toEntity(PointRule pointRule);
-    void mapDomainToEntity(PointRule pointRule, @MappingTarget PointsRules pointsRules);
-    default PointRuleResponse<Page<PointRule>> mapToDomainList(Page<PointsRules> pointsRules){
+@Mapper()
+public interface PointsRuleMapper {
+    PointsRuleMapper INSTANCE = Mappers.getMapper(PointsRuleMapper.class);
+    PointRule toDomain(PointsRule pointsRule);
+    PointsRule toEntity(PointRule pointRule);
+    void mapDomainToEntity(PointRule pointRule, @MappingTarget PointsRule pointsRule);
+    default PointRuleResponse<Page<PointRule>> mapToDomainList(Page<PointsRule> pointsRules){
         return Optional.of(pointsRules).map(this::toDomainList)
                 .map(response -> PointRuleResponse.<Page<PointRule>>builder().data(response).build())
                 .orElseGet(PointRuleResponse::new);
     }
-    private Page<PointRule> toDomainList(Page<PointsRules> pointsRules){
+    private Page<PointRule> toDomainList(Page<PointsRule> pointsRules){
         return new PageImpl<>(pointsRules.stream().map(this::toDomain)
                 .collect(Collectors.toList()), pointsRules.getPageable(), pointsRules.getTotalElements());
     }

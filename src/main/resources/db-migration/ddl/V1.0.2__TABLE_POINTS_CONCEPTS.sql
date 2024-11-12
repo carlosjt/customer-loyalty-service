@@ -16,6 +16,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_points_concepts_updated_at
-    BEFORE UPDATE ON t_points_concepts
+    BEFORE INSERT OR UPDATE ON t_points_concepts
     FOR EACH ROW
     EXECUTE FUNCTION update_points_concepts_updated_at_column();

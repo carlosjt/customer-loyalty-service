@@ -25,7 +25,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import py.com.cls.application.ports.in.PointRulePort;
 import py.com.cls.domain.models.point_rule.PointRule;
 import py.com.cls.domain.models.point_rule.PointRuleRequest;
-import py.com.cls.infrastructure.in.adapters.errors.ErrorResponse;
+import py.com.cls.infrastructure.in.adapters.exceptions.errors.ErrorResponse;
 
 @Path("/point-rule")
 @Tag(name = "PointRuleResource")

@@ -18,6 +18,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_points_rules_updated_at
-    BEFORE UPDATE ON t_points_rules
+    BEFORE INSERT OR UPDATE ON t_points_rules
     FOR EACH ROW
     EXECUTE FUNCTION update_points_rules_updated_at_column();
