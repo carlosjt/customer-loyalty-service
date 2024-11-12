@@ -1,4 +1,4 @@
-package py.com.cls.infrastructure.in.adapters.resources.customers;
+package py.com.cls.infrastructure.in.adapters.resources.point_concepts;
 
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -22,111 +22,85 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import py.com.cls.application.ports.in.CustomerPort;
-import py.com.cls.domain.models.customer.Customer;
-import py.com.cls.domain.models.customer.CustomerRequest;
-import py.com.cls.domain.models.point_rule.PointRule;
+import py.com.cls.application.ports.in.PointConceptPort;
+import py.com.cls.domain.models.point_concept.PointConcept;
+import py.com.cls.domain.models.point_concept.PointConceptRequest;
 import py.com.cls.infrastructure.in.adapters.exceptions.errors.ErrorResponse;
 
-import java.time.LocalDate;
-
-@Path("/customers")
-@Tag(name = "CustomerResource")
+@Path("/point-concept")
+@Tag(name = "PointConceptResource")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CustomerResource {
+public class PointConceptResource {
     @Inject
-    CustomerPort customerPort;
-    @Operation(summary = "Customers", description = "Get Customers")
+    PointConceptPort pointConceptPort;
+    @Operation(summary = "Point Concept", description = "Get Point Concept")
     @APIResponses(value = {
             @APIResponse(responseCode = "200", description = "Ok",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(type = SchemaType.ARRAY, implementation = Customer.class)))
+                            schema = @Schema(type = SchemaType.ARRAY, implementation = PointConcept.class)))
     })
     @GET
-    public Response getCustomers(
+    public Response getPointConcept(
             @QueryParam("page") @DefaultValue("0") int pageIndex,
             @QueryParam("size") @DefaultValue("20") int pageSize
     ) {
-        return customerPort.listAll(
-                CustomerRequest.builder()
+        return pointConceptPort.listAll(
+                PointConceptRequest.builder()
                         .page(pageIndex)
                         .pageSize(pageSize)
                         .build()
         ).fold(
                 error -> Response.status(error.getHttpStatusCode())
-                        .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()))
+                        .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()).build())
                         .build(),
                 success -> Response.ok(success).build()
         );
     }
-    @Operation(summary = "Customers", description = "Create Customers")
+    @Operation(summary = "Point Concept", description = "Create Point Concept")
     @APIResponses(value = {
             @APIResponse(responseCode = "201", description = "Ok",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(implementation = Customer.class)))
+                            schema = @Schema(implementation = PointConcept.class)))
     })
     @POST
-    public Response createCustomers(@Valid @RequestBody final Customer request) {
-        return customerPort.create(request).fold(
+    public Response createPointConcept(@Valid @RequestBody final PointConcept request) {
+        return pointConceptPort.create(request).fold(
                 error -> Response.status(error.getHttpStatusCode())
                         .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()).build())
                         .build(),
                 success -> Response.ok(success).build()
         );
     }
-    @Operation(summary = "Customers", description = "Update Customers")
+    @Operation(summary = "Point Concept", description = "Update Point Concept")
     @APIResponses(value = {
             @APIResponse(responseCode = "200", description = "Ok",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(implementation = Customer.class)))
+                            schema = @Schema(implementation = PointConcept.class)))
     })
     @PUT
     @Path("{id}")
-    public Response updateCustomers(@PathParam("id") final Integer id,
-                                     @Valid @RequestBody final Customer request) {
-        return customerPort.update(id, request).fold(
+    public Response updatePointConcept(@PathParam("id") final Integer id,
+                                     @Valid @RequestBody final PointConcept request) {
+        return pointConceptPort.update(id, request).fold(
                 error -> Response.status(error.getHttpStatusCode())
                         .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()).build())
                         .build(),
                 success -> Response.ok(success).build()
         );
     }
-    @Operation(summary = "Customers", description = "Delete Customers")
+    @Operation(summary = "Point Concept", description = "Delete Point Concept")
     @APIResponses(value = {
             @APIResponse(responseCode = "200", description = "Ok",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(implementation = PointRule.class)))
+                            schema = @Schema(implementation = PointConcept.class)))
     })
     @DELETE
     @Path("{id}")
-    public Response deleteCustomers(@PathParam("id") final Integer id) {
-        return customerPort.delete(id).fold(
+    public Response deletePointConcept(@PathParam("id") final Integer id) {
+        return pointConceptPort.delete(id).fold(
                 error -> Response.status(error.getHttpStatusCode())
                         .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()).build())
-                        .build(),
-                success -> Response.ok(success).build()
-        );
-    }
-    @Operation(summary = "Customers", description = "Get Customers With Criteria")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Ok",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(type = SchemaType.ARRAY, implementation = Customer.class)))
-    })
-    @GET
-    @Path("/search")
-    public Response getCustomersByCriteria(
-            @QueryParam("firstName") @DefaultValue("") final String firstName,
-            @QueryParam("lastName") @DefaultValue("") final String lastName,
-            @QueryParam("birthDate") final String birthDate
-    ) {
-        final LocalDate dateParse = birthDate == null || birthDate.isEmpty() ? null : LocalDate.parse(birthDate);
-        return customerPort.searchCustomers(
-                firstName, lastName, dateParse
-        ).fold(
-                error -> Response.status(error.getHttpStatusCode())
-                        .entity(ErrorResponse.builder().message(error.getMessage()).errorCode(error.getHttpStatusCode()))
                         .build(),
                 success -> Response.ok(success).build()
         );
