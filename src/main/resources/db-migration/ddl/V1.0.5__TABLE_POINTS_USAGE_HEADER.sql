@@ -1,6 +1,6 @@
 CREATE TABLE t_points_usage_header (
                                        id SERIAL PRIMARY KEY,
-                                       customer_id BIGINT NOT NULL REFERENCES t_customers(id) ON DELETE CASCADE,                -- Identificador del cliente
+                                       customer_id BIGINT NOT NULL REFERENCES t_customers(id) ON DELETE CASCADE,              -- Identificador del cliente
                                        total_points_used INT NOT NULL CHECK (total_points_used > 0),                          -- Total de puntos utilizados en esta transacción
                                        usage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                                        -- Fecha de uso de puntos
                                        usage_concept_id BIGINT NOT NULL REFERENCES t_points_concepts(id) ON DELETE SET NULL,  -- Concepto de uso de punto

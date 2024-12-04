@@ -8,6 +8,7 @@ CREATE TABLE t_customers (
                            email VARCHAR(100) UNIQUE,
                            phone VARCHAR(20),
                            birth_date DATE,
+                           location VARCHAR(100) NOT NULL,
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
